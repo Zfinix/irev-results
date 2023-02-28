@@ -53,3 +53,8 @@ jobs:
           git commit -m "new result fetch"
           git pull
           git push origin main
+
+      - uses: webiny/action-post-run@3.0.0
+        id: post-run-command
+        with:
+          run: git add pus/* && git commit -m "update only pus files" && git push
