@@ -66,7 +66,6 @@ jobs:
         run: |
           dart fetch.dart $stateIndex
           git add .
-          git commit -m "update only pus files"
 
       - name: Verify Changed files
         id: changed-files-specific
@@ -80,6 +79,7 @@ jobs:
         if: steps.changed-files-specific.outputs.any_changed == 'true'
         run: |
             # upload pus file
+            git commit -m "update only pus files"
             git pull
             git push origin main
 
@@ -87,12 +87,12 @@ jobs:
         run: |
           dart download.dart $stateIndex
           git add .
-          git commit -m "new result fetch"
         
       - name: Upload Results
         if: steps.changed-files-specific.outputs.any_changed == 'true'
         run: |
           # Stage the file, commit and push
+          git commit -m "new result fetch"
           git pull
           git push origin main
 
