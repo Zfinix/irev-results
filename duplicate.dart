@@ -65,7 +65,7 @@ jobs:
         run: dart main.dart $stateIndex
         
       - name: commit
-        if: always()
+        if: \${{ always() }}
         run: |
           # Stage the file, commit and push
           git add .
