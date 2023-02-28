@@ -22,6 +22,10 @@ String createYaml(int stateIndex) =>
 
 name: ${states[stateIndex]} Result Fetch
 
+on:
+  pull_request:
+    branches: [ "main" ]
+
 jobs:
   build:
     runs-on: ubuntu-latest
