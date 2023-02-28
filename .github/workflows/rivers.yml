@@ -47,21 +47,21 @@ jobs:
       - name: Run script
         run: dart main.dart 32
         
-      - uses: webiny/action-post-run@3.0.0
-        id: post-run-command
-        with:
-          run: |
-            # upload pus file
-            git add pus/*
-            git commit -m "update only pus files"
-            git pull
-            git push origin main
-        
       - name: commit
+        if: always()
         run: |
           # Stage the file, commit and push
           git add .
           git commit -m "new result fetch"
           git pull
           git push origin main
+
+      - name: post-run-command
+          if: always()
+          run: |
+            # upload pus file
+            git add pus/*
+            git commit -m "update only pus files"
+            git pull
+            git push origin main
 
