@@ -85,7 +85,7 @@ Future<void> loadWards() async {
 }
 
 Future<void> loadPus() async {
-  print(Directory('./').listSync(recursive: true));
+  print(Directory('./').listSync(recursive: true).map((e) => '${e.path}\n').toList());
   final exists = await puFile.exists();
   print('${puFile.path} exists: $exists');
 
