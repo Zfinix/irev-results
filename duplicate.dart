@@ -74,8 +74,8 @@ jobs:
           git push origin main
 
       - name: post-run-command
-          if: \${{ always() }}
-          run: |
+        if: \${{ always() }}
+        run: |
             # upload pus file
             git add pus/*
             git commit -m "update only pus files"
