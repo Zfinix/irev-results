@@ -56,7 +56,7 @@ final states = [
 ];
 
 late int currentStateIndex;
-File get puFile => File('pus/${states[currentStateIndex]}.json');
+File get puFile => File('./pus/${states[currentStateIndex]}.json');
 
 void main(List<String> args) async {
   currentStateIndex = int.parse(args.first);
@@ -85,6 +85,7 @@ Future<void> loadWards() async {
 }
 
 Future<void> loadPus() async {
+  print(Directory('./pus').listSync(recursive: true));
   final exists = await puFile.exists();
   print('${puFile.path} exists: $exists');
 
@@ -96,7 +97,7 @@ Future<void> loadPus() async {
       ),
     );
   } else {
-    await loadPusByWardID();
+    // await loadPusByWardID();
   }
 }
 
@@ -130,7 +131,7 @@ Future<void> loadPusByWardID() async {
 
 Future<void> downloadResult(Polling_unit pu, String? url) async {
   var file = File(
-    '${states[pu.lga.state_id - 1]}/${pu.lga.name}-${pu.lga.code}/${pu.ward.name}/${pu.name}-${pu.code}/result.pdf',
+    './${states[pu.lga.state_id - 1]}/${pu.lga.name}-${pu.lga.code}/${pu.ward.name}/${pu.name}-${pu.code}/result.pdf',
   );
 
   if (url == null || await file.exists()) {
