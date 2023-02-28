@@ -44,24 +44,26 @@ jobs:
       # Your project will need to have tests in test/ and a dependency on
       # package:test for this step to succeed. Note that Flutter projects will
       # want to change this to 'flutter test'.
-      - name: Run script
-        run: dart main.dart 11
-        
-      - name: commit
+      - name: Fetch polling units
+        run: dart fetch.dart 11
+      
+      - name: Upload polling uings data
         if: ${{ always() }}
+        run: |
+            # upload pus file
+            git add .
+            git commit -m "update only pus files"
+            git pull
+            git push origin main
+
+      - name: Download Results
+        run: dart download.dart 11
+        
+      - name: Upload Results
         run: |
           # Stage the file, commit and push
           git add .
           git commit -m "new result fetch"
           git pull
           git push origin main
-
-      - name: post-run-command
-        if: ${{ always() }}
-        run: |
-            # upload pus file
-            git add pus/*
-            git commit -m "update only pus files"
-            git pull
-            git push origin main
 

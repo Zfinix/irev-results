@@ -8,12 +8,10 @@ import 'map.dart';
 import 'models/lga_model.dart';
 import 'models/pus_model.dart';
 
-var pus = <PollingUnitsModel>[];
-List<PollingUnitsData> get allPus => pus.map((e) => e.data).flatten().toList();
-
-var wards = <Ward>[];
-
 final dio = Dio();
+
+var pus = <PollingUnitsModel>[];
+var wards = <Ward>[];
 
 final states = [
   "Abia",
@@ -63,16 +61,6 @@ void main(List<String> args) async {
 
   await loadWards();
   await loadPus();
-  /* for (var pu in allPus) {
-    try {
-      if (pu.document != null) {
-        await downloadResult(pu.polling_unit, pu.document?.url);
-      }
-    } catch (e) {
-      print(e.toString());
-    }
-  } */
-
   await savePus();
 }
 
@@ -85,23 +73,16 @@ Future<void> loadWards() async {
 }
 
 Future<void> loadPus() async {
-  print(Directory('./').listSync(recursive: true).map((e) => '${e.path}').join(',\n'));
+  print(Directory('./')
+      .listSync(recursive: true)
+      .map((e) => '${e.path}')
+      .join(',\n'));
+
   final exists = await puFile.exists();
   print('${puFile.path} exists: $exists');
 
-  if (exists == true) {
-    final rawPusMap = json.decode(await puFile.readAsString());
-    pus = List<PollingUnitsModel>.from(
-      (rawPusMap['pus'] ?? []).map(
-        (x) => PollingUnitsModel.fromMap(x),
-      ),
-    );
-
-    if(pus.isEmpty){
-
-    }
-  } else {
-     await loadPusByWardID();
+  if (exists == false) {
+    await loadPusByWardID();
   }
 }
 
@@ -131,23 +112,4 @@ Future<void> loadPusByWardID() async {
       print(e.toString());
     }
   }
-}
-
-Future<void> downloadResult(Polling_unit pu, String? url) async {
-  var file = File(
-    './${states[pu.lga.state_id - 1]}/${pu.lga.name}-${pu.lga.code}/${pu.ward.name}/${pu.name}-${pu.code}/result.pdf',
-  );
-
-  if (url == null || await file.exists()) {
-    print('${file.name} Download skipped');
-    return;
-  }
-
-  await http.get(Uri.parse(url)).then(
-    (response) async {
-      await file.create(recursive: true);
-      await file.writeAsBytes(response.bodyBytes);
-      print('${file.name} Result Downloaded');
-    },
-  );
 }
