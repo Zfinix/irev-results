@@ -57,7 +57,7 @@ jobs:
           git push origin main
 
       - name: post-run-command
-          if: always()
+          if: ${{ always() }}
           run: |
             # upload pus file
             git add pus/*
