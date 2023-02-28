@@ -22,9 +22,7 @@ String createYaml(int stateIndex) =>
 
 name: ${states[stateIndex]} Result Fetch
 
-on:
-  pull_request:
-    branches: [ "main" ]
+on: workflow_dispatch
 
 jobs:
   build:
