@@ -48,6 +48,14 @@ jobs:
       # - uses: dart-lang/setup-dart@v1
       - uses: dart-lang/setup-dart@9a04e6d73cca37bd455e0608d7e5092f881fd603
 
+      - name: Verify Changed files
+        uses: tj-actions/verify-changed-files@v13
+        id: verify-changed-files
+        with:
+          files: |
+             **/*.pdf
+             **/*.json
+
       - name: Install dependencies
         run: dart pub get
 
@@ -66,7 +74,7 @@ jobs:
         run: dart fetch.dart $stateIndex
       
       - name: Upload polling uings data
-        if: \${{ always() }}
+        if: steps.verify-changed-files.outputs.files_changed == 'true'
         run: |
             # upload pus file
             git add .
@@ -78,6 +86,7 @@ jobs:
         run: dart download.dart $stateIndex
         
       - name: Upload Results
+        if: steps.verify-changed-files.outputs.files_changed == 'true'
         run: |
           # Stage the file, commit and push
           git add .
