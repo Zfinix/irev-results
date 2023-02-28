@@ -73,6 +73,7 @@ jobs:
           git push origin main
 
   upload-pus:
+    needs: build
     runs-on: ubuntu-latest
     permissions: write-all
     if: \${{ always() }}
