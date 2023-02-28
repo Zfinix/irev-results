@@ -65,15 +65,14 @@ jobs:
             git push origin main
 
       - name: Download Results
-        run: |
-          dart download.dart 33
-          git add .
+        run: dart download.dart 33
         
       - name: Upload Results
-        if: steps.changed-files-specific.outputs.any_changed == 'true'
+        if: always()
         run: |
           # Stage the file, commit and push
-          git commit -m "new result fetch"
+          git add .
+          git commit --allow-empty -m "new result fetch"
           git pull
           git push origin main
 
