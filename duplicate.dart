@@ -26,6 +26,7 @@ on: workflow_dispatch
 
 jobs:
   build:
+    continue-on-error: true
     runs-on: ubuntu-latest
     permissions: write-all
     steps:
@@ -71,8 +72,25 @@ jobs:
           git pull
           git push origin main
 
-      - uses: webiny/action-post-run@3.0.0
-        id: post-run-command
-        with:
-          run: git add pus/* && git commit -m "update only pus files" && git push
+  upload-pus:
+    runs-on: ubuntu-latest
+    permissions: write-all
+    if: \${{ always() }}
+    steps:
+      - uses: actions/checkout@v3
+      - name: setup git config
+        run: |
+          # setup the username and email. I tend to use 'GitHub Actions Bot' with no email by default
+          git config user.name "GitHub Actions Bot"
+          git config user.email "<>"
+          git config pull.ff true
+          git config http.version HTTP/1.1
+          git config http.postBuffer 157286400
+
+      - name: commit
+        run: |
+          git add pus/*
+          git commit -m "update only pus files"
+          git pull
+          git push origin main
 ''';
