@@ -30,14 +30,6 @@ jobs:
       # - uses: dart-lang/setup-dart@v1
       - uses: dart-lang/setup-dart@9a04e6d73cca37bd455e0608d7e5092f881fd603
 
-      - name: Verify Changed files
-        uses: tj-actions/verify-changed-files@v13
-        id: verify-changed-files
-        with:
-          files: |
-             **/*.pdf
-             **/*.json
-
       - name: Install dependencies
         run: dart pub get
 
@@ -53,26 +45,36 @@ jobs:
       # package:test for this step to succeed. Note that Flutter projects will
       # want to change this to 'flutter test'.
       - name: Fetch polling units
-        run: dart fetch.dart 4
+        run: |
+          dart fetch.dart 4
+          git add .
+          git commit -m "update only pus files"
+
+      - name: Verify Changed files
+        id: changed-files-specific
+        uses: tj-actions/changed-files@v35
+        with:
+          files: |
+             **/*.pdf
+             **/*.json
       
-      - name: Upload polling uings data
-        if: steps.verify-changed-files.outputs.files_changed == 'true'
+      - name: Upload polling units data
+        if: steps.changed-files-specific.outputs.any_changed == 'true'
         run: |
             # upload pus file
-            git add .
-            git commit -m "update only pus files"
             git pull
             git push origin main
 
       - name: Download Results
-        run: dart download.dart 4
-        
-      - name: Upload Results
-        if: steps.verify-changed-files.outputs.files_changed == 'true'
         run: |
-          # Stage the file, commit and push
+          dart download.dart 4
           git add .
           git commit -m "new result fetch"
+        
+      - name: Upload Results
+        if: steps.changed-files-specific.outputs.any_changed == 'true'
+        run: |
+          # Stage the file, commit and push
           git pull
           git push origin main
 

@@ -50,7 +50,7 @@ Future<void> downloadResult(Polling_unit pu, String? url) async {
     (response) async {
       await file.create(recursive: true);
       await file.writeAsBytes(response.bodyBytes);
-      print('${file.path} Result Downloaded');
+      print('${file.path} Downloaded');
     },
   );
 }
