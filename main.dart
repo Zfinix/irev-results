@@ -85,7 +85,10 @@ Future<void> loadWards() async {
 }
 
 Future<void> loadPus() async {
-  if (await puFile.exists() == true) {
+  final exists = await puFile.exists();
+  print('${puFile.path} exists: $exists');
+
+  if (exists == true) {
     final rawPusMap = json.decode(await puFile.readAsString());
     pus = List<PollingUnitsModel>.from(
       (rawPusMap['pus'] ?? []).map(
@@ -131,6 +134,7 @@ Future<void> downloadResult(Polling_unit pu, String? url) async {
   );
 
   if (url == null || await file.exists()) {
+    print('${file.name} Download skipped');
     return;
   }
 
