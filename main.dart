@@ -63,7 +63,7 @@ void main(List<String> args) async {
 
   await loadWards();
   await loadPus();
-  for (var pu in allPus) {
+  /* for (var pu in allPus) {
     try {
       if (pu.document != null) {
         await downloadResult(pu.polling_unit, pu.document?.url);
@@ -71,7 +71,7 @@ void main(List<String> args) async {
     } catch (e) {
       print(e.toString());
     }
-  }
+  } */
 
   await savePus();
 }
@@ -85,7 +85,7 @@ Future<void> loadWards() async {
 }
 
 Future<void> loadPus() async {
-  print(Directory('./').listSync(recursive: true).map((e) => '${e.path}\n').toList());
+  print(Directory('./').listSync(recursive: true).map((e) => '${e.path}').join(',\n'));
   final exists = await puFile.exists();
   print('${puFile.path} exists: $exists');
 
@@ -96,8 +96,12 @@ Future<void> loadPus() async {
         (x) => PollingUnitsModel.fromMap(x),
       ),
     );
+
+    if(pus.isEmpty){
+
+    }
   } else {
-    // await loadPusByWardID();
+     await loadPusByWardID();
   }
 }
 
