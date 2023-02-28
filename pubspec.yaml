@@ -1,0 +1,14 @@
+name: irev_
+description: A new Flutter project.
+version: 1.0.0+1
+publish_to: none
+
+environment:
+  sdk: ">=2.18.6 <3.0.0"
+
+dependencies: 
+  darq: ^1.2.1
+  dartx: ^1.1.0
+  dio: ^5.0.1
+  equatable: ^2.0.5
+  http: ^0.13.5
