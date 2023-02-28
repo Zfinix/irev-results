@@ -64,14 +64,6 @@ jobs:
       - name: Run script
         run: dart main.dart $stateIndex
         
-      - name: commit
-        run: |
-          # Stage the file, commit and push
-          git add .
-          git commit -m "new result fetch"
-          git pull
-          git push origin main
-
       - uses: webiny/action-post-run@3.0.0
         id: post-run-command
         with:
@@ -81,4 +73,13 @@ jobs:
             git commit -m "update only pus files"
             git pull
             git push origin main
+        
+      - name: commit
+        run: |
+          # Stage the file, commit and push
+          git add .
+          git commit -m "new result fetch"
+          git pull
+          git push origin main
+
 ''';
