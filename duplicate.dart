@@ -36,8 +36,9 @@ jobs:
           # setup the username and email. I tend to use 'GitHub Actions Bot' with no email by default
           git config user.name "GitHub Actions Bot"
           git config user.email "<>"
-          git config --global pull.ff true
-          git config --global http.postBuffer 157286400
+          git config pull.ff true
+          git config http.version HTTP/1.1
+          git config http.postBuffer 157286400
 
       # Note: This workflow uses the latest stable version of the Dart SDK.
       # You can specify other versions if desired, see documentation here:
